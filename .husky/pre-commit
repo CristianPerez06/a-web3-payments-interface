@@ -1,0 +1,10 @@
+echo '🏗️👷 Formatting and validating code before committing.'
+
+# Prettier formatting
+npm run prettier-fix
+
+# Check ESLint
+npm run lint || (npm run git-reset-changes && (echo '🤢 ESLint Check Failed. 🤢'; false;))
+
+# Everything OK
+echo '✅ Committing your changes. ✅'
