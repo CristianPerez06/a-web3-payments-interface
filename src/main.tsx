@@ -3,9 +3,7 @@ import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 
 import './main.scss';
-import './fonts/AunchantedXspace.ttf';
-import './fonts/AunchantedXspaceBold.ttf';
-import './fonts/AunchantedXspaceThin.ttf';
+import './fonts/BDOGrotesk.woff2';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

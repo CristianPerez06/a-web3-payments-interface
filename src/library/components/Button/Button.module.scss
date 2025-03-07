@@ -1,0 +1,21 @@
+.container {
+  padding: var(--space-3) var(--space-4);
+  border: 2px solid var(--white);
+  background-color: transparent;
+  border-radius: var(--border-radius-rounded);
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  color: var(--white);
+  font-size: 16px;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &:hover:not(:disabled) {
+    background-color: var(--white);
+    color: var(--green);
+  }
+}
