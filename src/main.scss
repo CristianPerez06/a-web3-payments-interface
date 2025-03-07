@@ -1,35 +1,13 @@
-@font-face {
-  font-family: 'AunchantedXspace';
-  src:
-    local('AunchantedXspace'),
-    url('./fonts/AunchantedXspace.ttf') format('truetype');
-}
+@import './_variables.scss';
 
 @font-face {
-  font-family: 'AunchantedXspaceBold';
+  font-family: 'Grotesk';
   src:
-    local('AunchantedXspaceBold'),
-    url('./fonts/AunchantedXspaceBold.ttf') format('truetype');
-}
-
-@font-face {
-  font-family: 'AunchantedXspaceThin';
-  src:
-    local('AunchantedXspaceThin'),
-    url('./fonts/AunchantedXspaceThin.ttf') format('truetype');
-}
-
-:root {
-  --white: #fff;
-  --light-blue: #64f5fa;
-  --blue: #02cdd8;
-  --yellow: #fdfe1f;
-  --pink: #ffc5f6;
-  --light-pink: #fcf0fa;
+    local('Grotesk'),
+    url('./fonts/BDOGrotesk.woff2') format('truetype');
 }
 
 html {
-  // font-family: Arial, Helvetica, sans-serif;
   font-size: 62.5%;
   height: 100%;
 }

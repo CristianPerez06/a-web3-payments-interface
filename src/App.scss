@@ -1,7 +1,11 @@
 .app {
-  font-family: 'AunchantedXspace';
+  font-family: 'Grotesk';
   font-weight: 600;
   font-size: 2rem;
   height: 100%;
-  background-image: url('./img/background.svg');
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  background-image: url('./images/background.jpg');
 }
