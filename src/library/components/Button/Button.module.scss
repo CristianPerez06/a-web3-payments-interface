@@ -1,6 +1,10 @@
 .container {
-  padding: var(--space-3) var(--space-4);
-  border: 2px solid var(--white);
+  height: 46px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--white);
   background-color: transparent;
   border-radius: var(--border-radius-rounded);
   outline: none;
