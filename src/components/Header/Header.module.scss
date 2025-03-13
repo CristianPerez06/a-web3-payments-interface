@@ -3,10 +3,30 @@
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
   backdrop-filter: brightness(0.8);
 }
 
 .content {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 0 var(--space-10);
+}
+
+.left-content {
+  color: var(--white);
+  font-size: 16px;
+
+  &.disabled {
+    opacity: 0.5;
+    user-select: none;
+  }
+}
+
+.right-content {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
 }

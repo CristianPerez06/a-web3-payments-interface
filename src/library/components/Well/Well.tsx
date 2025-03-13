@@ -2,12 +2,10 @@ import cn from 'classnames';
 
 import styles from './Well.module.scss';
 
-export interface WellProps {}
+type Comp = () => React.ReactNode;
 
-type Comp = (props: WellProps) => React.ReactNode;
-
-const Well: Comp = (props) => {
-  return <div className={cn(styles['container'])}>This is the well</div>;
+const Well: Comp = () => {
+  return <div className={cn(styles['container'])}></div>;
 };
 
 export default Well;
