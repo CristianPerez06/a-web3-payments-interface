@@ -7,10 +7,10 @@ const config = createConfig({
   chains: [mainnet, linea, lineaSepolia, sepolia],
   connectors: [metaMask()],
   transports: {
-    [mainnet.id]: http(),
-    [linea.id]: http(),
-    [lineaSepolia.id]: http(),
-    [sepolia.id]: http(),
+    [mainnet.id]: http('https://eth-mainnet.g.alchemy.com/v2/XRH3SFJJlG7A9CqClZUkCNkiodc3lfkl'),
+    [sepolia.id]: http('https://eth-sepolia.g.alchemy.com/v2/XRH3SFJJlG7A9CqClZUkCNkiodc3lfkl'),
+    [linea.id]: http('https://linea-mainnet.g.alchemy.com/v2/XRH3SFJJlG7A9CqClZUkCNkiodc3lfkl'),
+    [lineaSepolia.id]: http('https://linea-sepolia.g.alchemy.com/v2/XRH3SFJJlG7A9CqClZUkCNkiodc3lfkl'),
   },
 });
 

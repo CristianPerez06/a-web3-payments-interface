@@ -3,6 +3,7 @@ import { useAccount, useConnect, useDisconnect, useSwitchChain } from 'wagmi';
 import wagmiConfig from '@/config';
 import { Button, Select } from '@/library/components';
 import { useChainUtilities } from '@/library/hooks';
+import { EnsName } from '@/components/Header/components';
 
 import styles from './Header.module.scss';
 
@@ -49,6 +50,7 @@ const Header: Comp = (props) => {
           )}
         </div>
         <div className={styles['right-content']}>
+          {isConnected && <EnsName address={address} />}
           {/* Connect button */}
           {!isConnected && (
             <Button
