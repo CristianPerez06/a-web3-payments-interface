@@ -106,7 +106,9 @@ export const Select: Comp = (props: SelectProps) => {
                       className={cn(styles['option'], selectedOption.value === option.value && styles['is-selected'])}
                       onClick={() => handleOptionClick(option)}
                     >
-                      <span className={styles['option-text']}>{option.label}</span>
+                      <div className={styles['option-text-container']}>
+                        <span className={styles['option-text']}>{option.label}</span>
+                      </div>
                     </li>
                   ))}
                 </>

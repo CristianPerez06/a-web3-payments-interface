@@ -1,30 +1,19 @@
 import cn from 'classnames';
-import { useAccount, useConnect, useDisconnect, useSwitchChain } from 'wagmi';
-import wagmiConfig from '@/config';
-import { Button, Select } from '@/library/components';
-import { useChainUtilities } from '@/library/hooks';
-import { EnsName } from '@/components/Header/components';
+import { useAccount } from 'wagmi';
+import {
+  EnsName,
+  ChainSelector,
+  BalanceSelector,
+  ConnectButton,
+  DisconnectButton,
+} from '@/components/Header/components';
 
 import styles from './Header.module.scss';
 
-export interface HeaderProps {
-  onConnect: () => void;
-}
+type Comp = () => React.ReactNode;
 
-type Comp = (props: HeaderProps) => React.ReactNode;
-
-const Header: Comp = (props) => {
-  const { onConnect } = props;
-
-  const { isChainSupported } = useChainUtilities();
+const Header: Comp = () => {
   const { address, chain } = useAccount();
-  const { connectors, connect } = useConnect();
-  const { disconnect } = useDisconnect();
-  const { switchChain } = useSwitchChain();
-
-  const handleChainChange = (chainId: string) => {
-    switchChain({ chainId: parseInt(chainId) });
-  };
 
   const isConnected = !!address;
   const chainSupported = !!chain;
@@ -37,34 +26,18 @@ const Header: Comp = (props) => {
           {isConnected && !chainSupported && <div>{'Unsupported network'}</div>}
           {/* Supported network */}
           {isConnected && chainSupported && (
-            <Select
-              defaultValue={chain.id.toString()}
-              options={wagmiConfig.chains.map((chain) => {
-                return {
-                  value: chain.id.toString(),
-                  label: chain.name,
-                };
-              })}
-              onChange={handleChainChange}
-            />
+            <>
+              <ChainSelector chain={chain} />
+              <BalanceSelector chainId={chain.id} connectedWalletAddress={address} />
+            </>
           )}
         </div>
         <div className={styles['right-content']}>
           {isConnected && <EnsName address={address} />}
           {/* Connect button */}
-          {!isConnected && (
-            <Button
-              onClick={() => {
-                connect({ connector: connectors[0] });
-                onConnect();
-              }}
-              isDisabled={!isChainSupported}
-            >
-              Connect
-            </Button>
-          )}
+          {!isConnected && <ConnectButton />}
           {/* Disconnect button */}
-          {isConnected && <Button onClick={() => disconnect()}>Disconnect</Button>}
+          {isConnected && <DisconnectButton />}
         </div>
       </div>
     </header>
