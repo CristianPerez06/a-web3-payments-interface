@@ -1,17 +1,17 @@
+import { useState } from 'react';
 import { Content, Header } from '@/components';
-import { Well } from '@/library/components';
 
 import './App.scss';
 
 type AppComponent = () => React.ReactNode;
 
 const App: AppComponent = () => {
+  const [symbolSelected, setSymbolSelected] = useState<string>('');
+
   return (
     <div className="app">
-      <Header />
-      <Content>
-        <Well />
-      </Content>
+      <Header onSymbolSelected={setSymbolSelected} />
+      <Content symbolSelected={symbolSelected} />
     </div>
   );
 };

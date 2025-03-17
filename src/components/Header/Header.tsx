@@ -10,9 +10,15 @@ import {
 
 import styles from './Header.module.scss';
 
-type Comp = () => React.ReactNode;
+interface HeaderProps {
+  onSymbolSelected: (symbol: string) => void;
+}
 
-const Header: Comp = () => {
+type Comp = (props: HeaderProps) => React.ReactNode;
+
+const Header: Comp = (props) => {
+  const { onSymbolSelected } = props;
+
   const { address, chain } = useAccount();
 
   const isConnected = !!address;
@@ -28,7 +34,11 @@ const Header: Comp = () => {
           {isConnected && chainSupported && (
             <>
               <ChainSelector chain={chain} />
-              <BalanceSelector chainId={chain.id} connectedWalletAddress={address} />
+              <BalanceSelector
+                chainId={chain.id}
+                connectedWalletAddress={address}
+                onSymbolSelected={onSymbolSelected}
+              />
             </>
           )}
         </div>

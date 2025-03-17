@@ -6,8 +6,6 @@ const ConnectButton = () => {
   const { isChainSupported } = useChainUtilities();
   const { connectors, connect } = useConnect();
 
-  console.log(connectors);
-
   return (
     <Button
       onClick={() => {
