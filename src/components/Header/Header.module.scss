@@ -1,10 +1,14 @@
 .container {
-  height: var(--space-18);
+  height: 174px;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   backdrop-filter: brightness(0.8);
+
+  @media (min-width: 768px) {
+    height: var(--space-18);
+  }
 }
 
 .content {
@@ -13,9 +17,19 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 var(--space-10);
+  flex-direction: column-reverse;
+  gap: var(--space-4);
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
 }
 
 .left-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
   color: var(--white);
   font-size: 16px;
 

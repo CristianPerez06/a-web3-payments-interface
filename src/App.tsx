@@ -6,13 +6,9 @@ import './App.scss';
 type AppComponent = () => React.ReactNode;
 
 const App: AppComponent = () => {
-  const handleOnConnect = () => {
-    console.log('connect');
-  };
-
   return (
     <div className="app">
-      <Header onConnect={handleOnConnect} />
+      <Header />
       <Content>
         <Well />
       </Content>

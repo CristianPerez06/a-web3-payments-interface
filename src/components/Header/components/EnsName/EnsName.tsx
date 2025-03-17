@@ -13,7 +13,7 @@ const EnsName: Comp = (props) => {
   const { address } = props;
 
   const { data, isLoading, error } = useEnsName({
-    address: '0xBfa2Fbe1456405Ebf37a061D791C88800815EFbE' as Address,
+    address: address,
     chainId: 1,
   });
 
