@@ -1,0 +1,56 @@
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+.container {
+  display: flex;
+}
+
+.input {
+  height: var(--space-8);
+  width: 100%;
+  border: solid 1px var(--white);
+  border-radius: var(--border-radius-md);
+  padding: 0 var(--space-2);
+  font-size: 14px;
+  color: var(--dark-gray);
+  transition: all 0.2s ease-in-out;
+
+  &.error {
+    border: solid 1px var(--red);
+  }
+
+  &:enabled {
+    &:focus,
+    &:hover {
+      outline: 0;
+      border: solid 1px var(--green);
+
+      &.error {
+        box-shadow: none;
+        border: solid 1px var(--red);
+        margin: 1px;
+      }
+    }
+
+    // &:focus {
+    //   box-shadow: 0 0 0 1px var(--secondary-6);
+    // }
+  }
+
+  &::-webkit-input-placeholder {
+    color: var(--light-gray);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+}

@@ -1,0 +1,24 @@
+.container {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: var(--space-1);
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid var(--dark-gray);
+  border-top-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-top-right-radius: var(--border-radius-sm);
+  border-bottom-right-radius: var(--border-radius-sm);
+}
+
+.suffix {
+  color: var(--dark-gray);
+  font-size: 12px;
+  padding: 2px;
+}
