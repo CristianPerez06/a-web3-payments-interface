@@ -6,86 +6,8 @@
   justify-content: center;
 }
 
-.content {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: var(--space-10);
-
-  @media (min-width: 768px) {
-    gap: var(--space-14);
-  }
-}
-
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-
-  @media (min-width: 768px) {
-    gap: var(--space-6);
-  }
-}
-
-.input-label-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: var(--space-2);
-
-  @media (min-width: 768px) {
-    justify-content: space-between;
-    flex-direction: row;
-    gap: var(--space-3);
-  }
-}
-
-input:-internal-autofill-selected {
-  color: var(--green) !important;
-}
-
-.amount-gas-container {
-  display: flex;
-  flex-direction: column;
-}
-
-.gas-estimate-container {
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: end;
-}
-
 .gas-estimate {
   padding-top: var(--space-1);
   font-size: 12px;
   color: var(--dark-gray);
-}
-
-.custom-address-input {
-  width: 326px;
-}
-
-.input-amount-container {
-  position: relative;
-}
-
-.custom-button-container {
-  width: 300px;
-
-  @media (min-width: 768px) {
-    width: 400px;
-  }
-}
-
-.custom-button-text {
-  font-family: 'Grotesk';
-  font-size: 20px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
 }
