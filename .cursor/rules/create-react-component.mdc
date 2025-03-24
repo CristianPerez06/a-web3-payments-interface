@@ -1,0 +1,49 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# CREATE-COMPONENT
+Rule: CREATE-COMPONENT Command
+Trigger: When the command starts with CREATE-COMPONENT.
+  Format: CREATE-COMPONENT - <path> - <name>
+    <path>: Directory path where the component folder will be created (e.g., src/components).
+    <name>: Name of the component (e.g., Input).
+    Parameters are separated by a hyphen-minus (-).
+    Example: CREATE-COMPONENT - src/components - Input
+Action:
+  Create a new folder at <path>/<name>.
+  Replace <Name> with the component name (e.g., Input) every time you find it within the files content.
+  Inside this folder, generate three files with the following:
+    # {component}.tsx
+    File 1 name: <Name>.tsx
+    File 1 content:  
+      import styles from './<Name>.module.scss';
+      
+      interface <Name>Props {
+        name: string; // This is just a placeholder
+      }
+
+      type Comp = (props: <Name>Props) => React.ReactNode;
+
+      const <Name> = (props) => {
+        const { name } = props;
+        
+        return <div id="name" className={styles['container']}><Name></div>;
+      };
+
+      export default <Name>;
+      
+    # {component}.module.scss.tsx
+    File 2 name: <Name>.module.scss
+    File 2 content:
+      .container {
+        // Add your styles here
+      }
+
+    # index.ts
+    File 3 name: index.ts
+    File 3 content:
+      import <Name> from './<Name>';
+
+      export default <Name>;
