@@ -3,9 +3,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #fff;
+  // border: 1px solid #fff;
   border-radius: var(--space-3);
   padding: var(--space-6);
-  filter: drop-shadow(0 25px 25px rgb(0 0 0 / 0.15));
-  background-color: rgba(255, 255, 255, 0.3);
+  // filter: drop-shadow(0 25px 25px rgb(0 0 0 / 0.15));
+  // background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgb(27, 22, 34);
 }

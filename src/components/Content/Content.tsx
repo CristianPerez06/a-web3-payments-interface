@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { parseEther, formatEther } from 'viem';
+import { parseEther, formatEther, parseUnits, Address } from 'viem';
+import { erc20Abi } from 'viem';
 import { BaseError } from '@wagmi/core';
-import { useEstimateGas, useSendTransaction } from 'wagmi';
+import { useEstimateGas, useSendTransaction, useSimulateContract } from 'wagmi';
+import { GenericNullAddress } from '@/library/contants';
 import { Well } from '@/library/components';
 import Form from '@/components/Content/Form';
 
@@ -31,11 +33,25 @@ const Content: Comp = (props) => {
 
   const {
     data: gasEstimate,
-    error: gasEstimateError,
     isPending: gasEstimateIsPending,
+    error: gasEstimateError,
   } = useEstimateGas({
     to: formData.address ? (formData.address as `0x${string}`) : null,
     value: parseEther(formData.amount?.toString() ?? '0'),
+    query: {
+      enabled: !!formData.amount && !!formData.address && symbolSelected === 'ETH',
+    },
+  });
+
+  const {
+    data: simulateContractData,
+    isPending: simulateContractIsPending,
+    error: simulateContractError,
+  } = useSimulateContract({
+    address: '0x779877A7B0D9E8603169DdbD7836e478b4624789',
+    abi: erc20Abi,
+    functionName: 'transfer',
+    args: [(formData.address as Address) || GenericNullAddress, parseUnits(formData.amount?.toString() ?? '0', 6)],
     query: {
       enabled: !!formData.amount && !!formData.address && symbolSelected === 'ETH',
     },
@@ -75,7 +91,9 @@ const Content: Comp = (props) => {
       return 'loading';
     }
 
-    if (!gasEstimate || !!gasEstimateError || gasEstimateIsPending) {
+    const gasEstimateNotReady = !gasEstimate || !!gasEstimateError || gasEstimateIsPending;
+    const simulateContractNotReady = !simulateContractData || !!simulateContractError || simulateContractIsPending;
+    if (gasEstimateNotReady || simulateContractNotReady) {
       return 'disabled';
     }
 
