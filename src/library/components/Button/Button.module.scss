@@ -18,6 +18,7 @@
     &:disabled {
       background-color: rgb(27, 22, 34);
       cursor: not-allowed;
+      color: var(--green);
     }
 
     &:hover:not(:disabled) {
@@ -35,6 +36,7 @@
     &:disabled {
       background-color: rgb(27, 22, 34);
       cursor: not-allowed;
+      color: var(--white);
     }
 
     &:hover:not(:disabled) {
@@ -52,6 +54,7 @@
     &:disabled {
       cursor: not-allowed;
       opacity: 0.5;
+      color: var(--white);
     }
 
     &:hover:not(:disabled) {
