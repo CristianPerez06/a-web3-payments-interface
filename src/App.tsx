@@ -12,7 +12,9 @@ const App: AppComponent = () => {
   return (
     <div className="app">
       <Header onSymbolSelected={setSymbolSelected} />
-      <Content symbolSelected={symbolSelected} />
+      <div className="content">
+        <Content symbolSelected={symbolSelected} />
+      </div>
       <ToastContainer
         position="top-right"
         autoClose={5000}

@@ -22,3 +22,5 @@ export const erc20ContractsByChain: Erc20ContractsByChain[] = [
     ],
   },
 ];
+
+export const GenericNullAddress = '0x0000000000000000000000000000000000000000';

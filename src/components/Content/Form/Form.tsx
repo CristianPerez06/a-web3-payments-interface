@@ -3,6 +3,7 @@ import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Input, Spinner } from '@/library/components';
+import { GenericNullAddress } from '@/library/contants';
 import { InputAmount, InputPrefix } from '@/components/Content/Form/components';
 import { InputAmountValue } from '@/components/Content/Form/components/InputAmount';
 
@@ -97,7 +98,7 @@ const Form: Comp = (props: FormProps) => {
             render={({ field }) => (
               <Input
                 name="address"
-                placeholder="0x0000000000000000000000000000000000000000"
+                placeholder={GenericNullAddress}
                 value={formData.address ?? ''}
                 onChange={(e) => {
                   field.onChange(e);
@@ -114,7 +115,12 @@ const Form: Comp = (props: FormProps) => {
           />
         </div>
       </div>
-      <Button type="submit" isDisabled={isSubmitDisabled} containerClass={styles['custom-button-container']}>
+      <Button
+        type="submit"
+        isDisabled={isSubmitDisabled}
+        containerClass={styles['custom-button-container']}
+        variant="secondary"
+      >
         {(sendButtonState === 'idle' || sendButtonState === 'disabled') && (
           <span className={styles['custom-button-text']}>Send</span>
         )}

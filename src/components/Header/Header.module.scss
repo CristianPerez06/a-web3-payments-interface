@@ -5,6 +5,9 @@
   align-items: center;
   justify-content: center;
   backdrop-filter: brightness(0.8);
+  border-bottom: 1px solid hsla(0, 0%, 100%, 0.3);
+  background-color: var(--black);
+  z-index: 1;
 
   @media (min-width: 768px) {
     height: var(--space-18);

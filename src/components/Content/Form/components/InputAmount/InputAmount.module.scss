@@ -22,7 +22,7 @@ input[type='number'] {
   border-radius: var(--border-radius-md);
   padding: 0 var(--space-2);
   font-size: 14px;
-  color: var(--dark-gray);
+  color: var(--dark-purple);
   transition: all 0.2s ease-in-out;
 
   &.error {
@@ -33,7 +33,7 @@ input[type='number'] {
     &:focus,
     &:hover {
       outline: 0;
-      border: solid 1px var(--green);
+      border: solid 1px var(--dark-purple);
 
       &.error {
         box-shadow: none;

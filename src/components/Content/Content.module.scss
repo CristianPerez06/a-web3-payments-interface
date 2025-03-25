@@ -4,10 +4,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  backdrop-filter: blur(10px);
+  z-index: 0;
 }
 
 .gas-estimate {
   padding-top: var(--space-1);
   font-size: 12px;
-  color: var(--dark-gray);
+  color: var(--dark-purple);
 }
