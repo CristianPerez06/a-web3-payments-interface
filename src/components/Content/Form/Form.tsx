@@ -119,7 +119,7 @@ const Form: Comp = (props: FormProps) => {
         type="submit"
         isDisabled={isSubmitDisabled}
         containerClass={styles['custom-button-container']}
-        variant="secondary"
+        variant="primary"
       >
         {(sendButtonState === 'idle' || sendButtonState === 'disabled') && (
           <span className={styles['custom-button-text']}>Send</span>
