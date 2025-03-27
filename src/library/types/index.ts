@@ -1,14 +1,21 @@
 import { Address } from 'abitype';
 
-export enum ChainSymbols {
+export enum ChainSymbol {
   ETH = 'ETH',
   LINK = 'LINK',
   USDT = 'USDT',
   USDC = 'USDC',
 }
 
-export interface Erc20ContractsByChain {
-  chainName: string;
-  chainId: number;
-  contracts: { symbol: ChainSymbols; address?: Address }[];
-}
+export type Erc20ContractsByChain = {
+  [chainId: number]: {
+    chainName: string;
+    contracts: {
+      [key in ChainSymbol]: Address | undefined;
+    };
+  };
+};
+
+export type ChainSymbolIds = {
+  readonly [key in ChainSymbol]: number;
+};

@@ -3,11 +3,11 @@ import { Address } from 'abitype';
 import { Select } from '@/library/components';
 import { useGetBalances } from '@/library/hooks';
 import { erc20ContractsByChain } from '@/library/contants';
-
+import { ChainSymbol } from '@/library/types';
 export interface BalanceSelectorProps {
   chainId: number;
   connectedWalletAddress: Address;
-  onSymbolSelected: (symbol: string) => void;
+  onSymbolSelected: (symbol: ChainSymbol) => void;
 }
 
 type Comp = (props: BalanceSelectorProps) => React.ReactNode;
@@ -17,24 +17,26 @@ const BalanceSelector: Comp = (props) => {
 
   const [selectedSymbol, setSelectedSymbol] = useState<string>('');
 
-  const currentChainData = erc20ContractsByChain.find((chain) => chain.chainId === chainId);
-  const currentChainTokenAddresses = currentChainData?.contracts.map((contract) => {
-    return contract.address;
+  const currentChainData = erc20ContractsByChain[chainId];
+  const currentChainTokenAddresses = Object.values(currentChainData!.contracts).map((address) => {
+    return address;
   }) as Address[];
 
-  const { data, isLoading } = useGetBalances(connectedWalletAddress, currentChainTokenAddresses);
+  const { data, isLoading } = useGetBalances(connectedWalletAddress, currentChainTokenAddresses!);
 
   const handleSymbolSelected = useCallback(
     (option: string) => {
-      setSelectedSymbol(option);
-      onSymbolSelected(option);
+      const symbol = option as ChainSymbol;
+
+      setSelectedSymbol(symbol);
+      onSymbolSelected(symbol);
     },
     [onSymbolSelected],
   );
 
   useEffect(() => {
     if (data.length > 0) {
-      handleSymbolSelected(data[0].symbol);
+      handleSymbolSelected(data[0].symbol as ChainSymbol);
     }
   }, [data, handleSymbolSelected]);
 

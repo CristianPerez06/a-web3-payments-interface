@@ -1,5 +1,6 @@
 import cn from 'classnames';
 import { useAccount } from 'wagmi';
+import { ChainSymbol } from '@/library/types';
 import {
   EnsName,
   ChainSelector,
@@ -11,7 +12,7 @@ import {
 import styles from './Header.module.scss';
 
 interface HeaderProps {
-  onSymbolSelected: (symbol: string) => void;
+  onSymbolSelected: (symbol: ChainSymbol) => void;
 }
 
 type Comp = (props: HeaderProps) => React.ReactNode;

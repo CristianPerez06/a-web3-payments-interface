@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { ChainSymbol } from '@/library/types';
+import { chainSymbolDecimals } from '@/library/contants';
 import { Button, Input, Spinner } from '@/library/components';
 import { GenericNullAddress } from '@/library/contants';
-import { InputAmount, InputPrefix } from '@/components/Content/Form/components';
-import { InputAmountValue } from '@/components/Content/Form/components/InputAmount';
+import { InputAmount, InputAmountValue, InputPrefix } from './components';
 
 import styles from './Form.module.scss';
 
@@ -25,7 +26,7 @@ const schema: yup.ObjectSchema<FormData> = yup.object().shape({
 export interface FormProps {
   symbolSelected: string;
   defaultFormData?: FormData;
-  sendButtonState?: 'disabled' | 'loading' | 'idle';
+  sendButtonState?: 'disabled' | 'sending' | 'fetching' | 'idle';
   onChange: (formData: FormData) => void;
   onSubmit: (formData: FormData) => void;
   gasEstimate: React.ReactNode;
@@ -35,6 +36,8 @@ type Comp = (props: FormProps) => React.ReactNode;
 
 const Form: Comp = (props: FormProps) => {
   const { symbolSelected, sendButtonState = 'disabled', onChange, onSubmit, gasEstimate, defaultFormData } = props;
+
+  const decimalsLimit = chainSymbolDecimals[symbolSelected as ChainSymbol];
 
   const [formData, setFormData] = useState<FormData>({
     amount: null,
@@ -57,10 +60,12 @@ const Form: Comp = (props: FormProps) => {
     }
   }, [defaultFormData]);
 
-  const isSubmitDisabled = !isValid || sendButtonState === 'disabled' || sendButtonState === 'loading';
+  const isSubmitDisabled =
+    !isValid || sendButtonState === 'disabled' || sendButtonState === 'sending' || sendButtonState === 'fetching';
+  const showSpinner = sendButtonState === 'sending';
 
   return (
-    <form onSubmit={handleSubmit((formData) => onSubmit(formData))} className={styles['container']}>
+    <form onSubmit={handleSubmit(onSubmit)} className={styles['container']}>
       <div className={styles['form']}>
         <div className={styles['amount-gas-container']}>
           <div className={styles['input-label-container']}>
@@ -72,6 +77,7 @@ const Form: Comp = (props: FormProps) => {
                 render={({ field }) => (
                   <InputAmount
                     value={formData.amount as InputAmountValue}
+                    decimalsLimit={decimalsLimit}
                     onChange={(value) => {
                       field.onChange(value);
 
@@ -119,16 +125,9 @@ const Form: Comp = (props: FormProps) => {
         type="submit"
         isDisabled={isSubmitDisabled}
         containerClass={styles['custom-button-container']}
-        variant="primary"
+        variant="secondary"
       >
-        {(sendButtonState === 'idle' || sendButtonState === 'disabled') && (
-          <span className={styles['custom-button-text']}>Send</span>
-        )}
-        {sendButtonState === 'loading' && (
-          <div>
-            <Spinner />
-          </div>
-        )}
+        {showSpinner ? <Spinner /> : <span className={styles['custom-button-text']}>Send</span>}
       </Button>
     </form>
   );

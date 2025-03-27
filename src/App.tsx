@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { Bounce, ToastContainer } from 'react-toastify';
 import { Content, Header } from '@/components';
+import { ChainSymbol } from '@/library/types';
 
 import './App.scss';
 
 type AppComponent = () => React.ReactNode;
 
 const App: AppComponent = () => {
-  const [symbolSelected, setSymbolSelected] = useState<string>('');
+  const [symbolSelected, setSymbolSelected] = useState<ChainSymbol>(ChainSymbol.ETH);
 
   return (
     <div className="app">

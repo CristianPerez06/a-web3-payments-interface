@@ -3,9 +3,10 @@ import { getBalance } from '@wagmi/core';
 import { Address } from 'abitype';
 import { isEqual } from 'lodash';
 import wagmiConfig from '@/config';
+import { ChainSymbol } from '@/library/types';
 
 interface BalancePerSymbol {
-  symbol: string;
+  symbol: ChainSymbol;
   balance: string;
 }
 
@@ -21,7 +22,7 @@ const useGetBalances = (walletAddress: Address, tokenAddresses: Address[]) => {
     });
 
     return {
-      symbol: balance.symbol,
+      symbol: balance.symbol as ChainSymbol,
       balance: balance.formatted,
     };
   }, []);
