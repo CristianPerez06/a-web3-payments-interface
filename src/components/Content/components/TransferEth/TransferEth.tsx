@@ -28,6 +28,7 @@ const TransferEth: Comp = (props) => {
     amount: null,
     address: '',
   });
+  const [isFormValid, setIsFormValid] = useState(false);
 
   const {
     data: gasEstimate,
@@ -37,7 +38,7 @@ const TransferEth: Comp = (props) => {
     to: formData.address ? (formData.address as Address) : null,
     value: parseEther(formData.amount?.toString() ?? '0'),
     query: {
-      enabled: !!formData.amount && !!formData.address,
+      enabled: !!formData.amount && !!formData.address && isFormValid,
     },
   });
 
@@ -57,6 +58,7 @@ const TransferEth: Comp = (props) => {
             amount: null,
             address: '',
           });
+          setIsFormValid(false);
           toast.success('Success: Transaction sent!');
           setIsSending(false);
         },
@@ -103,7 +105,12 @@ const TransferEth: Comp = (props) => {
           symbolSelected={currentSymbol}
           sendButtonState={getButtonState()}
           defaultFormData={formData}
-          onChange={(data) => setFormData(data)}
+          onChange={(data) => {
+            setFormData(data);
+          }}
+          onValidate={(isValid) => {
+            setIsFormValid(isValid);
+          }}
           onSubmit={onSubmit}
           gasEstimate={
             <>

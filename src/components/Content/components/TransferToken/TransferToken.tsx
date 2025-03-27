@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { formatEther } from 'viem';
 import { BaseError } from '@wagmi/core';
-import { useEstimateGas, useSendTransaction, useSimulateContract } from 'wagmi';
+import { useEstimateGas, UseEstimateGasParameters, useSendTransaction, useSimulateContract } from 'wagmi';
 import { ChainSymbol } from '@/library/types';
 import { Well } from '@/library/components';
 import { useEstimateGasConfig, useSimulateContractConfig } from '@/library/hooks';
@@ -32,12 +32,21 @@ const TransferToken: Comp = (props) => {
     amount: null,
     address: '',
   });
+  const [isFormValid, setIsFormValid] = useState(false);
 
-  const estimateGasConfig = getEstimateGasConfig(
-    currentSymbol,
-    formData.address ?? undefined,
-    formData.amount ?? undefined,
-  );
+  let estimateGasConfig: UseEstimateGasParameters = {
+    query: {
+      enabled: false,
+    },
+  };
+  if (isFormValid) {
+    estimateGasConfig = getEstimateGasConfig(
+      currentSymbol,
+      formData.address ?? undefined,
+      formData.amount ?? undefined,
+    );
+  }
+
   const simulateContractConfig = getSimulateContractConfig(
     currentSymbol,
     formData.address ?? undefined,
@@ -48,14 +57,26 @@ const TransferToken: Comp = (props) => {
     data: gasEstimate,
     isFetching: gasEstimateIsFetching,
     error: gasEstimateError,
-  } = useEstimateGas(estimateGasConfig);
+  } = useEstimateGas({
+    ...estimateGasConfig,
+    query: {
+      ...estimateGasConfig.query,
+      enabled: estimateGasConfig.query?.enabled && isFormValid,
+    },
+  });
 
   // Simulate contract
   const {
     data: simulateContractData,
     isFetching: simulateContractIsFetching,
     error: simulateContractError,
-  } = useSimulateContract(simulateContractConfig);
+  } = useSimulateContract({
+    ...simulateContractConfig,
+    query: {
+      ...simulateContractConfig.query,
+      enabled: simulateContractConfig.query?.enabled && isFormValid,
+    },
+  });
 
   const { sendTransaction } = useSendTransaction();
 
@@ -122,7 +143,12 @@ const TransferToken: Comp = (props) => {
           symbolSelected={currentSymbol}
           sendButtonState={getButtonState()}
           defaultFormData={formData}
-          onChange={(data) => setFormData(data)}
+          onChange={(data) => {
+            setFormData(data);
+          }}
+          onValidate={(isValid) => {
+            setIsFormValid(isValid);
+          }}
           onSubmit={onSubmit}
           gasEstimate={
             <>
