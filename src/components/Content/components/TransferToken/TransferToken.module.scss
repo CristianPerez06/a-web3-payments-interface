@@ -1,5 +1,19 @@
-.gas-estimate {
-  padding-top: var(--space-1);
+.gas-estimate-container {
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.address-from-ens-container {
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.input-additional-info {
   font-size: 12px;
   color: var(--dark-purple);
+  padding-top: var(--space-1);
 }

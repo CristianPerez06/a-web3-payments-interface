@@ -29,3 +29,6 @@ export const chainSymbolDecimals: ChainSymbolIds = {
 };
 
 export const GenericNullAddress = '0x0000000000000000000000000000000000000000';
+
+export const HEX_REGEX = /(0x)?[0-9a-fA-F]{40}$/;
+export const ENS_REGEX = /^(?!-)([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)\.[a-zA-Z]{2,20}$/;

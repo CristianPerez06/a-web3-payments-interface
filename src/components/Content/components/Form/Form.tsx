@@ -5,23 +5,23 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { ChainSymbol } from '@/library/types';
 import { chainSymbolDecimals } from '@/library/contants';
 import { Button, Input, Spinner } from '@/library/components';
-import { GenericNullAddress } from '@/library/contants';
+import { GenericNullAddress, HEX_REGEX, ENS_REGEX } from '@/library/contants';
 import { InputAmount, InputAmountValue, InputPrefix } from './components';
 
 import styles from './Form.module.scss';
-
-interface FormData {
-  amount: string | null;
-  address: string | null;
-}
 
 const schema: yup.ObjectSchema<FormData> = yup.object().shape({
   amount: yup.string().required('Amount is required'),
   address: yup
     .string()
     .required('Address is required')
-    .matches(/^0x[a-fA-F0-9]{40}$/, 'Invalid Ethereum address format'),
+    .matches(new RegExp(`${HEX_REGEX.source}|${ENS_REGEX.source}`), 'Invalid Ethereum address or ENS name'),
 });
+
+interface FormData {
+  amount: string | null;
+  address: string | null;
+}
 
 export interface FormProps {
   symbolSelected: ChainSymbol;
@@ -30,7 +30,8 @@ export interface FormProps {
   onChange: (formData: FormData) => void;
   onSubmit: (formData: FormData) => void;
   onValidate: (isValid: boolean) => void;
-  gasEstimate: React.ReactNode;
+  addressInfo: React.ReactNode;
+  gasInfo: React.ReactNode;
 }
 
 type Comp = (props: FormProps) => React.ReactNode;
@@ -42,7 +43,8 @@ const Form: Comp = (props: FormProps) => {
     onChange,
     onSubmit,
     onValidate,
-    gasEstimate,
+    addressInfo,
+    gasInfo,
     defaultFormData,
   } = props;
 
@@ -84,7 +86,7 @@ const Form: Comp = (props: FormProps) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles['container']}>
       <div className={styles['form']}>
-        <div className={styles['amount-gas-container']}>
+        <div className={styles['input-info-container']}>
           <div className={styles['input-label-container']}>
             <label htmlFor="amount">Amount</label>
             <div className={styles['input-amount-container']}>
@@ -110,32 +112,35 @@ const Form: Comp = (props: FormProps) => {
               {symbolSelected && <InputPrefix symbol={symbolSelected} />}
             </div>
           </div>
-          <div className={styles['gas-estimate-container']}>{gasEstimate}</div>
+          <div>{gasInfo}</div>
         </div>
 
-        <div className={styles['input-label-container']}>
-          <label htmlFor="address">To</label>
-          <Controller
-            name="address"
-            control={control}
-            render={({ field }) => (
-              <Input
-                name="address"
-                placeholder={GenericNullAddress}
-                value={formData.address ?? ''}
-                onChange={(e) => {
-                  field.onChange(e);
+        <div className={styles['input-info-container']}>
+          <div className={styles['input-label-container']}>
+            <label htmlFor="address">To</label>
+            <Controller
+              name="address"
+              control={control}
+              render={({ field }) => (
+                <Input
+                  name="address"
+                  placeholder={GenericNullAddress}
+                  value={formData.address ?? ''}
+                  onChange={(e) => {
+                    field.onChange(e);
 
-                  const prevFormData = { ...formData };
-                  const newFormData = { ...prevFormData, address: e.target.value };
+                    const prevFormData = { ...formData };
+                    const newFormData = { ...prevFormData, address: e.target.value };
 
-                  setFormData(newFormData);
-                  onChange(newFormData);
-                }}
-                inputClass={styles['custom-address-input']}
-              />
-            )}
-          />
+                    setFormData(newFormData);
+                    onChange(newFormData);
+                  }}
+                  inputClass={styles['custom-address-input']}
+                />
+              )}
+            />
+          </div>
+          <div>{addressInfo}</div>
         </div>
       </div>
       <Button
