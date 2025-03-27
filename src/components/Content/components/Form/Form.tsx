@@ -24,20 +24,29 @@ const schema: yup.ObjectSchema<FormData> = yup.object().shape({
 });
 
 export interface FormProps {
-  symbolSelected: string;
+  symbolSelected: ChainSymbol;
   defaultFormData?: FormData;
   sendButtonState?: 'disabled' | 'sending' | 'fetching' | 'idle';
   onChange: (formData: FormData) => void;
   onSubmit: (formData: FormData) => void;
+  onValidate: (isValid: boolean) => void;
   gasEstimate: React.ReactNode;
 }
 
 type Comp = (props: FormProps) => React.ReactNode;
 
 const Form: Comp = (props: FormProps) => {
-  const { symbolSelected, sendButtonState = 'disabled', onChange, onSubmit, gasEstimate, defaultFormData } = props;
+  const {
+    symbolSelected,
+    sendButtonState = 'disabled',
+    onChange,
+    onSubmit,
+    onValidate,
+    gasEstimate,
+    defaultFormData,
+  } = props;
 
-  const decimalsLimit = chainSymbolDecimals[symbolSelected as ChainSymbol];
+  const decimalsLimit = chainSymbolDecimals[symbolSelected];
 
   const [formData, setFormData] = useState<FormData>({
     amount: null,
@@ -60,8 +69,16 @@ const Form: Comp = (props: FormProps) => {
     }
   }, [defaultFormData]);
 
+  useEffect(() => {
+    onValidate(isValid);
+  }, [isValid, onValidate]);
+
   const isSubmitDisabled =
-    !isValid || sendButtonState === 'disabled' || sendButtonState === 'sending' || sendButtonState === 'fetching';
+    !isValid ||
+    sendButtonState === 'disabled' ||
+    sendButtonState === 'sending' ||
+    sendButtonState === 'fetching' ||
+    !isValid;
   const showSpinner = sendButtonState === 'sending';
 
   return (
