@@ -34,7 +34,9 @@ const TransferEth: Comp = (props) => {
 
   const { shortenAddress, isEns } = useTextUtilities();
   const debouncedAddress = useMemo(() => debounce((value: string | null) => value, 100), [])(formData.address);
-  const { data: currentAddress } = useGetAddressFromEns(debouncedAddress ?? null);
+  // Use ENS if it's valid, otherwise use the address
+  const addressToUse = isEns(formData.address ?? '') ? debouncedAddress : formData.address;
+  const { data: currentAddress } = useGetAddressFromEns(addressToUse || null);
 
   const {
     data: gasEstimate,
@@ -122,10 +124,16 @@ const TransferEth: Comp = (props) => {
           onSubmit={onSubmit}
           gasInfo={
             <div className={styles['gas-estimate-container']}>
-              {gasEstimateIsFetching && <span className={styles['input-additional-info']}>{`Gas: Fetching...`}</span>}
-              {gasEstimateError && <span className={styles['input-additional-info']}>{`Gas: Error!`}</span>}
-              {!gasEstimateIsFetching && gasEstimate && (
-                <span className={styles['input-additional-info']}>{`Gas: ${formatEther(gasEstimate)}`}</span>
+              {isFormValid && (
+                <>
+                  {gasEstimateIsFetching && (
+                    <span className={styles['input-additional-info']}>{`Gas: Fetching...`}</span>
+                  )}
+                  {gasEstimateError && <span className={styles['input-additional-info']}>{`Gas: Error!`}</span>}
+                  {!gasEstimateIsFetching && gasEstimate && (
+                    <span className={styles['input-additional-info']}>{`Gas: ${formatEther(gasEstimate)}`}</span>
+                  )}
+                </>
               )}
             </div>
           }

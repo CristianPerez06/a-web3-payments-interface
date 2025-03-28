@@ -8,17 +8,19 @@ import {
   ConnectButton,
   DisconnectButton,
 } from '@/components/Header/components';
+import { Chain } from 'wagmi/chains';
 
 import styles from './Header.module.scss';
 
 interface HeaderProps {
+  onChainSelected: (chain: Chain) => void;
   onSymbolSelected: (symbol: ChainSymbol) => void;
 }
 
 type Comp = (props: HeaderProps) => React.ReactNode;
 
 const Header: Comp = (props) => {
-  const { onSymbolSelected } = props;
+  const { onChainSelected, onSymbolSelected } = props;
 
   const { address, chain } = useAccount();
 
@@ -34,7 +36,7 @@ const Header: Comp = (props) => {
           {/* Supported network */}
           {isConnected && chainSupported && (
             <>
-              <ChainSelector chain={chain} />
+              <ChainSelector chain={chain} onChainSelected={onChainSelected} />
               <BalanceSelector
                 chainId={chain.id}
                 connectedWalletAddress={address}
