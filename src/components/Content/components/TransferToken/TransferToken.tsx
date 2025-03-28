@@ -39,7 +39,9 @@ const TransferToken: Comp = (props) => {
 
   const { shortenAddress, isEns } = useTextUtilities();
   const debouncedAddress = useMemo(() => debounce((value: string | null) => value, 100), [])(formData.address);
-  const { data: currentAddress } = useGetAddressFromEns(debouncedAddress ?? null);
+  // Use ENS if it's valid, otherwise use the address
+  const addressToUse = isEns(formData.address ?? '') ? debouncedAddress : formData.address;
+  const { data: currentAddress } = useGetAddressFromEns(addressToUse || null);
   const { getConfig: getEstimateGasConfig } = useEstimateGasConfig();
   const { getConfig: getSimulateContractConfig } = useSimulateContractConfig();
 

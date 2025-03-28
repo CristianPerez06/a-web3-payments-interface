@@ -5,12 +5,13 @@ import { Select } from '@/library/components';
 
 export interface ChainSelectorProps {
   chain: Chain;
+  onChainSelected: (chain: Chain) => void;
 }
 
 type Comp = (props: ChainSelectorProps) => React.ReactNode;
 
 const ChainSelector: Comp = (props) => {
-  const { chain } = props;
+  const { chain, onChainSelected } = props;
 
   const { switchChain, isPending } = useSwitchChain();
 
@@ -23,7 +24,10 @@ const ChainSelector: Comp = (props) => {
           label: chain.name,
         };
       })}
-      onChange={(chainId) => switchChain({ chainId: parseInt(chainId) })}
+      onChange={(chainId) => {
+        switchChain({ chainId: parseInt(chainId) });
+        onChainSelected(wagmiConfig.chains.find((chain) => chain.id.toString() === chainId) as Chain);
+      }}
       isDisabled={isPending}
     />
   );
