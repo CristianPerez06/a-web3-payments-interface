@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { debounce } from 'lodash';
 import { toast } from 'react-toastify';
-import { parseEther, formatEther, Address } from 'viem';
+import { Address, formatEther, parseEther } from 'viem';
 import { BaseError } from '@wagmi/core';
 import { useEstimateGas, useSendTransaction } from 'wagmi';
 import { ChainSymbol } from '@/library/types';
 import { Well } from '@/library/components';
+import { useGetAddressFromEns, useTextUtilities } from '@/library/hooks';
 import { Form } from '@/components/Content/components';
 
 import styles from './TransferEth.module.scss';
@@ -30,15 +32,19 @@ const TransferEth: Comp = (props) => {
   });
   const [isFormValid, setIsFormValid] = useState(false);
 
+  const { shortenAddress, isEns } = useTextUtilities();
+  const debouncedAddress = useMemo(() => debounce((value: string | null) => value, 100), [])(formData.address);
+  const { data: currentAddress } = useGetAddressFromEns(debouncedAddress ?? null);
+
   const {
     data: gasEstimate,
     isFetching: gasEstimateIsFetching,
     error: gasEstimateError,
   } = useEstimateGas({
-    to: formData.address ? (formData.address as Address) : null,
+    to: currentAddress ? (currentAddress as Address) : null,
     value: parseEther(formData.amount?.toString() ?? '0'),
     query: {
-      enabled: !!formData.amount && !!formData.address && isFormValid,
+      enabled: !!formData.amount && !!currentAddress && isFormValid,
     },
   });
 
@@ -98,6 +104,8 @@ const TransferEth: Comp = (props) => {
     }
   }, [gasEstimateError]);
 
+  const showAddressInfo = isEns(formData.address ?? '') && currentAddress;
+
   return (
     <div className={styles['container']}>
       <Well>
@@ -112,14 +120,21 @@ const TransferEth: Comp = (props) => {
             setIsFormValid(isValid);
           }}
           onSubmit={onSubmit}
-          gasEstimate={
-            <>
-              {gasEstimateIsFetching && <span className={styles['gas-estimate']}>{`Gas: Fetching...`}</span>}
-              {gasEstimateError && <span className={styles['gas-estimate']}>{`Gas: Error!`}</span>}
+          gasInfo={
+            <div className={styles['gas-estimate-container']}>
+              {gasEstimateIsFetching && <span className={styles['input-additional-info']}>{`Gas: Fetching...`}</span>}
+              {gasEstimateError && <span className={styles['input-additional-info']}>{`Gas: Error!`}</span>}
               {!gasEstimateIsFetching && gasEstimate && (
-                <span className={styles['gas-estimate']}>{`Gas: ${formatEther(gasEstimate)}`}</span>
+                <span className={styles['input-additional-info']}>{`Gas: ${formatEther(gasEstimate)}`}</span>
               )}
-            </>
+            </div>
+          }
+          addressInfo={
+            <div className={styles['address-from-ens-container']}>
+              <span className={styles['input-additional-info']}>
+                {showAddressInfo ? shortenAddress(currentAddress) : ''}
+              </span>
+            </div>
           }
         />
       </Well>

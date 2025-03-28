@@ -1,6 +1,6 @@
 import { useChains, useChainId } from 'wagmi';
 
-export const useChainUtilities = () => {
+const useChainUtilities = () => {
   const chains = useChains();
   const chainId = useChainId();
 
@@ -13,3 +13,5 @@ export const useChainUtilities = () => {
     isChainSupported,
   };
 };
+
+export default useChainUtilities;

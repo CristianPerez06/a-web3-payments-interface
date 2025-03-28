@@ -1,11 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { debounce } from 'lodash';
 import { toast } from 'react-toastify';
 import { formatEther } from 'viem';
 import { BaseError } from '@wagmi/core';
 import { useEstimateGas, UseEstimateGasParameters, useSendTransaction, useSimulateContract } from 'wagmi';
 import { ChainSymbol } from '@/library/types';
 import { Well } from '@/library/components';
-import { useEstimateGasConfig, useSimulateContractConfig } from '@/library/hooks';
+import {
+  useEstimateGasConfig,
+  useGetAddressFromEns,
+  useSimulateContractConfig,
+  useTextUtilities,
+} from '@/library/hooks';
 import { Form } from '@/components/Content/components';
 
 import styles from './TransferToken.module.scss';
@@ -24,9 +30,6 @@ type Comp = (props: TransferTokenProps) => React.ReactNode;
 const TransferToken: Comp = (props) => {
   const { currentSymbol } = props;
 
-  const { getConfig: getEstimateGasConfig } = useEstimateGasConfig();
-  const { getConfig: getSimulateContractConfig } = useSimulateContractConfig();
-
   const [isSending, setIsSending] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     amount: null,
@@ -34,25 +37,28 @@ const TransferToken: Comp = (props) => {
   });
   const [isFormValid, setIsFormValid] = useState(false);
 
+  const { shortenAddress, isEns } = useTextUtilities();
+  const debouncedAddress = useMemo(() => debounce((value: string | null) => value, 100), [])(formData.address);
+  const { data: currentAddress } = useGetAddressFromEns(debouncedAddress ?? null);
+  const { getConfig: getEstimateGasConfig } = useEstimateGasConfig();
+  const { getConfig: getSimulateContractConfig } = useSimulateContractConfig();
+
   let estimateGasConfig: UseEstimateGasParameters = {
     query: {
       enabled: false,
     },
   };
   if (isFormValid) {
-    estimateGasConfig = getEstimateGasConfig(
-      currentSymbol,
-      formData.address ?? undefined,
-      formData.amount ?? undefined,
-    );
+    estimateGasConfig = getEstimateGasConfig(currentSymbol, currentAddress ?? undefined, formData.amount ?? undefined);
   }
 
   const simulateContractConfig = getSimulateContractConfig(
     currentSymbol,
-    formData.address ?? undefined,
+    currentAddress ?? undefined,
     formData.amount ?? undefined,
   );
 
+  // Estimate gas
   const {
     data: gasEstimate,
     isFetching: gasEstimateIsFetching,
@@ -136,6 +142,8 @@ const TransferToken: Comp = (props) => {
     }
   }, [gasEstimateError]);
 
+  const showAddressInfo = isEns(formData.address ?? '') && currentAddress;
+
   return (
     <div className={styles['container']}>
       <Well>
@@ -150,14 +158,21 @@ const TransferToken: Comp = (props) => {
             setIsFormValid(isValid);
           }}
           onSubmit={onSubmit}
-          gasEstimate={
-            <>
-              {gasEstimateIsFetching && <span className={styles['gas-estimate']}>{`Gas: Fetching...`}</span>}
-              {gasEstimateError && <span className={styles['gas-estimate']}>{`Gas: Error!`}</span>}
+          gasInfo={
+            <div className={styles['gas-estimate-container']}>
+              {gasEstimateIsFetching && <span className={styles['input-additional-info']}>{`Gas: Fetching...`}</span>}
+              {gasEstimateError && <span className={styles['input-additional-info']}>{`Gas: Error!`}</span>}
               {!gasEstimateIsFetching && gasEstimate && (
-                <span className={styles['gas-estimate']}>{`Gas: ${formatEther(gasEstimate)}`}</span>
+                <span className={styles['input-additional-info']}>{`Gas: ${formatEther(gasEstimate)}`}</span>
               )}
-            </>
+            </div>
+          }
+          addressInfo={
+            <div className={styles['address-from-ens-container']}>
+              <span className={styles['input-additional-info']}>
+                {showAddressInfo ? shortenAddress(currentAddress) : ''}
+              </span>
+            </div>
           }
         />
       </Well>

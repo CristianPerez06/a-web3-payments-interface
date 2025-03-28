@@ -8,7 +8,7 @@
   gap: var(--space-10);
 
   @media (min-width: 768px) {
-    gap: var(--space-14);
+    gap: var(--space-12);
   }
 }
 
@@ -40,16 +40,9 @@ input:-internal-autofill-selected {
   color: var(--green) !important;
 }
 
-.amount-gas-container {
+.input-info-container {
   display: flex;
   flex-direction: column;
-}
-
-.gas-estimate-container {
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: end;
 }
 
 .custom-address-input {
