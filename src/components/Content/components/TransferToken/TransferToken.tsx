@@ -38,6 +38,7 @@ const TransferToken: Comp = (props) => {
   const [isFormValid, setIsFormValid] = useState(false);
 
   const { shortenAddress, isEns } = useTextUtilities();
+
   const debouncedAddress = useMemo(() => debounce((value: string | null) => value, 100), [])(formData.address);
   // Use ENS if it's valid, otherwise use the address
   const addressToUse = isEns(formData.address ?? '') ? debouncedAddress : formData.address;
