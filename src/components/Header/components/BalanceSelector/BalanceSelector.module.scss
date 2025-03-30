@@ -1,0 +1,36 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.button-custom-container {
+  border: 1px solid var(--white);
+  background-color: var(--white);
+
+  > svg {
+    color: var(--dark-purple);
+  }
+
+  &:disabled {
+    background-color: var(--white) !important;
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  &:hover:not(:disabled) {
+    background-color: var(--dark-purple);
+    border: 1px solid var(--dark-purple);
+
+    > svg {
+      color: var(--white);
+    }
+  }
+}
+
+.button-icon {
+  height: var(--space-5);
+  width: var(--space-5);
+  color: var(--black);
+}
