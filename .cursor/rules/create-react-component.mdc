@@ -3,6 +3,11 @@ description:
 globs: 
 alwaysApply: false
 ---
+---
+description: Ensures consistent component creation by standardizing folder structure, file generation, and naming conventions.
+globs: 
+alwaysApply: false
+---
 # CREATE-COMPONENT
 Rule: CREATE-COMPONENT Command
 Trigger: When the command starts with CREATE-COMPONENT.
