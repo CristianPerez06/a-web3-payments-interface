@@ -12,17 +12,36 @@ A modern Web3 payments interface built with React and Wagmi for seamless cryptoc
 - classnames
 - Prettier, ESLint, and Husky
 
-## How to execute the app
+## Getting Started
 
-1. Run `npm install`
-2. Run `npm run husky-prepare`
-3. Run `npm run dev`
+### Prerequisites
 
-## Live example
+Before running the development server, you need to set up the connection to Alchemy API.
 
-This example is deployed on [Render](https://render.com/) using a free account. Taking this into account there are a couple of things to keep in mind before using the app:
+**Set Environment Variables**
 
-- On first use, the App will have to boot, which could take several seconds.
-- Extensive use may affect performance.
+Create a `.env` file in the root directory and add:
 
-Go to [live example](https://a-web3-payments-interface.onrender.com/)
+```
+VITE_ALCHEMY_API_KEY=your_api_key_here
+```
+
+### Development Server
+
+Next step is to install dependencies and run the development server:
+
+```bash
+To run the application locally:
+
+1. Install dependencies: `npm install`
+2. Start the development server: `npm run dev`
+```
+
+## Live Demo
+
+A live version of this app is hosted on [Render](https://render.com/) (free tier). Please note:
+
+- The app may take several seconds to start on first use, as the server may be sleeping.
+- Performance may be limited during periods of high usage.
+
+[View the live demo here](https://a-web3-payments-interface.onrender.com/)
