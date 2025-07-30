@@ -1,6 +1,6 @@
 # a-web3-payments-interface
 
-A web3 payments interface
+A modern Web3 payments interface built with React and Wagmi for seamless cryptocurrency transfers. Features wallet connection, multi-chain support, ENS resolution, and real-time gas estimation for ETH and token transfers.
 
 ## Tech stack
 
